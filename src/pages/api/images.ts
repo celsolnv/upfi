@@ -49,13 +49,7 @@ export default async function handler(
   }
 
   if (req.method === 'GET') {
-    const { after: afterQuery } = req.query;
-    let after;
-    if (afterQuery === 'null') {
-      after = 0;
-    } else {
-      after = afterQuery;
-    }
+    const { after } = req.query;
 
     const queryOptions = {
       size: 6,

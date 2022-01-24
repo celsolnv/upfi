@@ -11,12 +11,12 @@ import { ImagesQueryResponse } from './api/images';
 
 export default function Home(): JSX.Element {
   async function fetchImages({ pageParam = null }): Promise<any> {
-    console.log('Esperando');
-    const response = await api.get(`/images?after=${pageParam}`);
+    const response = await api.get(`/api/images`, {
+      params: { after: pageParam },
+    });
     return response.data;
   }
   function getNextPageParam(lastPage: ImagesQueryResponse): string {
-    console.log('Aqui ');
     if (lastPage?.after) {
       return lastPage.after.id;
     }
@@ -30,17 +30,18 @@ export default function Home(): JSX.Element {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery('images', fetchImages, { getNextPageParam });
-
   const formattedData = useMemo(() => {
-    return data?.pages.map(page => {
-      return page.data.map(dataImage => ({
-        title: dataImage.title,
-        description: dataImage.description,
-        url: dataImage.url,
-        ts: dataImage.ts,
-        id: dataImage.id,
-      }));
-    })[0];
+    return data?.pages
+      .map(page => {
+        return page.data.map(dataImage => ({
+          title: dataImage.title,
+          description: dataImage.description,
+          url: dataImage.url,
+          ts: dataImage.ts,
+          id: dataImage.id,
+        }));
+      })
+      .flat();
   }, [data]);
 
   if (isError) {
