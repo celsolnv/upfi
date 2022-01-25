@@ -10,15 +10,17 @@ import { Error } from '../components/Error';
 import { ImagesQueryResponse } from './api/images';
 
 export default function Home(): JSX.Element {
-  async function fetchImages({ pageParam = null }): Promise<any> {
+  async function fetchImages({
+    pageParam = null,
+  }): Promise<ImagesQueryResponse> {
     const response = await api.get(`/api/images`, {
       params: { after: pageParam },
     });
     return response.data;
   }
-  function getNextPageParam(lastPage: ImagesQueryResponse): string {
-    if (lastPage?.after) {
-      return lastPage.after.id;
+  function getNextPageParam(lastPage): string {
+    if (lastPage.after) {
+      return lastPage.after;
     }
     return null;
   }
@@ -47,7 +49,6 @@ export default function Home(): JSX.Element {
   if (isError) {
     return <Error />;
   }
-  console.log('Formated Data', data);
   return (
     <>
       {isLoading ? (
@@ -58,7 +59,16 @@ export default function Home(): JSX.Element {
 
           <Box maxW={1120} px={20} mx="auto" my={20}>
             <CardList cards={formattedData} />
-            {/* TODO RENDER LOAD MORE BUTTON IF DATA HAS NEXT PAGE */}
+            {hasNextPage && (
+              <Button
+                onClick={() => {
+                  fetchNextPage();
+                }}
+                mt={2}
+              >
+                {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
+              </Button>
+            )}
           </Box>
         </>
       )}
