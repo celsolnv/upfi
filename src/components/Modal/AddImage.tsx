@@ -30,7 +30,7 @@ export function ModalAddImage({
 
         <ModalCloseButton />
 
-        <ModalBody px={60}>
+        <ModalBody px={[15, 30, 60]}>
           <FormAddImage closeModal={handleCloseModal} />
         </ModalBody>
       </ModalContent>

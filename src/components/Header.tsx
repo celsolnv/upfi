@@ -12,12 +12,15 @@ export function Header(): JSX.Element {
           justifyContent="space-between"
           alignItems="center"
           maxW={1120}
+          w="100%"
           mx="auto"
-          px={20}
+          px={[5, 10, 20]}
           py={6}
         >
           <Image src="logo.svg" h={10} />
-          <Button onClick={() => onOpen()}>Adicionar imagem</Button>
+          <Button whiteSpace="normal" onClick={() => onOpen()}>
+            Adicionar imagem
+          </Button>
         </Flex>
       </Box>
 
